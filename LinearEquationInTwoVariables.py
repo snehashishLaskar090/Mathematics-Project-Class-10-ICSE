@@ -83,17 +83,18 @@ def SolveTwoEquas(equa1:Equation, equa2:Equation):
                 # equa2.factorize()
 
 
-                for i in equa2.LHS:
-                    print("yes")
-                    if i.variable == equa1.variable:
-                        print("Yes")
-                        equa2.LHS[equa2.LHS.index(i)].variable = [i.rep for i in equa1.RHS]
-                        print(equa2.LHS[equa2.LHS.index(i)].variable)
-                        print(equa2.LHS[equa2.LHS.index(i)].num_coef)
+        for i in equa2.LHS:
+            print("yes")
+            if i.variable == equa1.variable:
+                print("Yes")
+                equa2.LHS[equa2.LHS.index(i)].variable = equa1.RHS
+                print([i.rep for i in equa2.LHS[equa2.LHS.index(i)].variable])
+                num = equa2.LHS[equa2.LHS.index(i)].num_coef
 
-    print(equa1)
-    print(equa2)
-
+                for i in equa2.LHS[equa2.LHS.index(i)].variable:
+                    i.num_coef = str(int(i.num_coef) * int(num))
+                    print(i.rep)
+    print([i.rep for i in equa2.LHS])
 
 
 SolveTwoEquas(equation1, equation2)
