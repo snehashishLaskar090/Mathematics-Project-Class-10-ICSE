@@ -82,7 +82,6 @@ def SolveTwoEquas(equa1:Equation, equa2:Equation):
                 print(equa2.variable)
                 # equa2.factorize()
 
-
         for i in equa2.LHS:
             print("yes")
             if i.variable == equa1.variable:
@@ -95,7 +94,7 @@ def SolveTwoEquas(equa1:Equation, equa2:Equation):
                     i.num_coef = str(int(i.num_coef) * int(num))
                     print(i.rep)
     print([i.rep for i in equa2.LHS])
-
+# Haha new change
 
 SolveTwoEquas(equation1, equation2)
 
