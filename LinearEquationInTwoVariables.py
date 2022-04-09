@@ -69,31 +69,57 @@ equation1 = Equation([Term("1", "x", "+"), Term("7", "y", "-")], [Term("11", "",
 equation2 = Equation([Term("5", "x", "+"), Term("2", "y", "+")], [Term("18", "", "-")])
 
 def SolveTwoEquas(equa1:Equation, equa2:Equation):
+
+    print([i.rep for i in equa1.LHS],"=", [i.rep for i in equa1.RHS])
+    print([i.rep for i in equa2.LHS],"=", [i.rep for i in equa2.RHS])
+    equa1Original = equa1
+    equa2Original = equa2
     equa1.factorize()
     equa2.setVariable()
     variable = equa1.variable
-    print(variable)
-    print(equa2.variable)
+
     if equa1.variable == equa2.variable:
-        print("yes")
+
         for i in equa2.LHS:
             if i.variable != variable and i.variable != "":
                 equa2.variable = i.variable
-                print(equa2.variable)
-                # equa2.factorize()
 
         for i in equa2.LHS:
-            print("yes")
+
             if i.variable == equa1.variable:
-                print("Yes")
+
                 equa2.LHS[equa2.LHS.index(i)].variable = equa1.RHS
-                print([i.rep for i in equa2.LHS[equa2.LHS.index(i)].variable])
+                # print([i.rep for i in equa2.LHS[equa2.LHS.index(i)].variable])
                 num = equa2.LHS[equa2.LHS.index(i)].num_coef
 
-                for i in equa2.LHS[equa2.LHS.index(i)].variable:
-                    i.num_coef = str(int(i.num_coef) * int(num))
-                    print(i.rep)
-    print([i.rep for i in equa2.LHS])
+                for j in equa2.LHS[equa2.LHS.index(i)].variable:
+                    j.num_coef = str(int(j.num_coef) * int(num))
+                    j.rep = j.sign + j.num_coef + j.variable
+
+                    equa2.LHS.append(Term(j.sign, j.num_coef, j.variable))
+                equa2.LHS.remove(equa2.LHS[equa2.LHS.index(i)])
+
+
+        for i in equa2.LHS:
+            sum = 0
+            if i.variable == equa2.variable:
+                sum += int(i.num_coef)
+                print([i.rep for i in equa2.LHS])
+                # equa2.LHS.remove(equa2.LHS.index(i))
+
+            sign = None
+            sum2 =  None
+            if "-" in str(sum):
+                sign = "-"
+                sum2  = abs(sum)
+            else:
+                sign = "+"
+
+            equa2.LHS.append(Term(sign, str(sum2), equa2.variable))
+    print([i.rep for i in equa2.LHS],"=", [i.rep for i in equa2.RHS])
+
+
+
 # Haha new change
 
 SolveTwoEquas(equation1, equation2)
