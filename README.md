@@ -54,7 +54,7 @@ class Term:
 
 ```
 
-### Next we define a way to represent each eqution. This object of represenation of an equation takes in two parameters. It takes in an LHS which is a list / array of the Term objects we defined before. This Eqution object can represent an equation and can also 
+###Next we define a way to represent each eqution. This object of represenation of an equation takes in two parameters. It takes in an LHS which is a list / array of the Term objects we defined before. This Eqution object can represent an equation and can also 
 
 
 
@@ -70,21 +70,32 @@ class Equation:
         self.eqaution = f"{[i.rep for i in LHS]} = {[j.rep for j in RHS]}"
 
 ```
-### Now that we have an Equation we can move further in terms of how a human would aproch this problem. In the standard way the human would bring all the variables to one side of the Equation and bring all the constants to the other side of of the equation. So lets go ahead and do the same with a function that we will call factorize. 
+### Now that we have an Equation we can move further in terms of how a human would aproch this problem. In the standard way the human would bring all the variables to one side of the Equation and bring all the constants to the other side of of the equation. So lets go ahead and do the same with a function that we will call factorize. This function takes an approach where it puts all the variables to the LHS and puts all the constants to the RHS. By this method we can easily solve for the solution. The function does this by going through each term in the LHS or RHS and checks if that Term is a variable or not. If it is a variable, it first removes it from RHS then  it changes the sign of the Term by using the changeSign function. Then it puts into the LHS. If the given Term is a constant then, it removes it from LHS, changes its sign and puts it into RHS. 
 
 ```python
 def factorize(self):
+
+    # A way to check if a given term is 
+    # a constant or a variable
     for i in self.LHS:
+        # If the term is a constant then:
         if i.variable == "":
+            # We remove the term form the LHS
             self.LHS.remove(i)
+            # Change the sign of the Term
             i.changeSign()
+            # And then put it into the RHS
             self.RHS.append(i)
 
-
+    # A way to check if a given term is a constant or a variable
     for j in self.RHS:
+        # If the given term is a variable then:
         if j.variable != "":
+            # Remove form RHS
             self.RHS.remove(j)
+            # Change the sign of the term
             j.changeSign()
+            # Put it into LHS
             self.LHS.append(j)
 
     self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
