@@ -1,7 +1,7 @@
 # Maths Project
 
-### In this project I will be exploring how Mathematical Thinking can be simulated with Computer Science. In this Maths Project I will not be dvelving very deep into Mathematics. I will just be simultaing Mathematical think using python code. This Project will look into:
-#
+ In this project I will be exploring how Mathematical Thinking can be simulated with Computer Science. In this Maths Project I will not be dvelving very deep into Mathematics. I will just be simultaing Mathematical think using python code. This Project will look into:
+
 1. Simulating how humans solve linear equations in one variable
 
 2. Simulating how humans can solve linear equations in two variables
@@ -13,10 +13,10 @@
 5. How code can be used for statistics
 
 
-#
+
 ## Simulating Linear Equations in one variable :
-#
-### First we start by Defining an Object called Term. Each term in an equation is represented using this speceifc Object. A term has: (a) sign, (b) numerical co-efficient and (C) a variable In terms where the term is not a vaiable value, the variable is left empty. This how humans represent each term of a Equation. Here is code for the object Term:
+
+First we start by Defining an Object called Term. Each term in an equation is represented using this speceifc Object. A term has: (a) sign, (b) numerical co-efficient and (C) a variable In terms where the term is not a vaiable value, the variable is left empty. This how humans represent each term of a Equation. Here is code for the object Term:
 ```python
 # Creating a class term
 class Term:
@@ -54,7 +54,7 @@ class Term:
 
 ```
 
-###Next we define a way to represent each eqution. This object of represenation of an equation takes in two parameters. It takes in an LHS which is a list / array of the Term objects we defined before. This Eqution object can represent an equation and can also 
+Next we define a way to represent each eqution. This object of represenation of an equation takes in two parameters. It takes in an LHS which is a list / array of the Term objects we defined before. This Eqution object can represent an equation and can also 
 
 
 
@@ -70,7 +70,7 @@ class Equation:
         self.eqaution = f"{[i.rep for i in LHS]} = {[j.rep for j in RHS]}"
 
 ```
-### Now that we have an Equation we can move further in terms of how a human would aproch this problem. In the standard way the human would bring all the variables to one side of the Equation and bring all the constants to the other side of of the equation. So lets go ahead and do the same with a function that we will call factorize. This function takes an approach where it puts all the variables to the LHS and puts all the constants to the RHS. By this method we can easily solve for the solution. The function does this by going through each term in the LHS or RHS and checks if that Term is a variable or not. If it is a variable, it first removes it from RHS then  it changes the sign of the Term by using the changeSign function. Then it puts into the LHS. If the given Term is a constant then, it removes it from LHS, changes its sign and puts it into RHS. 
+Now that we have an Equation we can move further in terms of how a human would aproch this problem. In the standard way the human would bring all the variables to one side of the Equation and bring all the constants to the other side of of the equation. So lets go ahead and do the same with a function that we will call factorize. This function takes an approach where it puts all the variables to the LHS and puts all the constants to the RHS. By this method we can easily solve for the solution. The function does this by going through each term in the LHS or RHS and checks if that Term is a variable or not. If it is a variable, it first removes it from RHS then  it changes the sign of the Term by using the changeSign function. Then it puts into the LHS. If the given Term is a constant then, it removes it from LHS, changes its sign and puts it into RHS. 
 
 ```python
 def factorize(self):
@@ -101,4 +101,21 @@ def factorize(self):
     self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
 
     return self.eqaution
+```
+After we have a factorized Equation such that all the variables are at the LHS and all the constants are at the RHS, its very easy for us to solve it as humans. similarly the computer's next logical step is to solve for the variable. The piece of code for this is given below:
+```python
+
+def Solve(self):
+        sum = 0
+        for i in self.RHS:
+            sum += int(i.sign + i.num_coef)
+
+        variable = None
+        sum2 = 0
+        for i in self.LHS:
+            sum2 += int(i.sign + str(i.num_coef))
+            variable = i.variable
+
+        return f"step 1 = {str(sum2) + variable} = {sum}", f"step 2 = {variable} = {sum/sum2}"
+
 ```
