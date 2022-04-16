@@ -102,7 +102,7 @@ def factorize(self):
 
     return self.eqaution
 ```
-After we have a factorized Equation such that all the variables are at the LHS and all the constants are at the RHS, its very easy for us to solve it as humans. similarly the computer's next logical step is to solve for the variable. The piece of code for this is given below:
+After we have a factorized Equation such that all the variables are at the LHS and all the constants are at the RHS, its very easy for us to solve it as humans. similarly the computer's next logical step is to solve for the variable. First the algorithm Sums up all the constants in the RHS making it just one element in the RHS. Then it adds up the numerical coefficients of all the variable terms in the LHS and just attaches the variable. Then at last it divides the sum of constants in the RHS by the sum of numerical co-efficients of the variable terms. This gives us the answer. The piece of code for this is given below
 ```python
 
 def Solve(self):
@@ -119,3 +119,26 @@ def Solve(self):
         return f"step 1 = {str(sum2) + variable} = {sum}", f"step 2 = {variable} = {sum/sum2}"
 
 ```
+So when you give a equation class to the python interpreter, it solves the equation like a human. An example would be:
+
+```python
+
+# Here the Equation given is 2x + 5 = 10 + x
+# Answer using human mind  = 5
+# Run the program and see if the result is the same :)
+
+firstEqua = Equation([Term("2", "x", "+"), Term("5", "", "+")], [Term("10", "", "+"), Term("1", "x", "+")])
+print(firstEqua.factorize())
+print(firstEqua.Solve())
+
+```
+#
+```
+Input : 
+    python LinerEquationsInOneVariable.py
+Output :
+    step 1 : 1x = 5
+    step 2 : x = 5.0
+```
+Therefore this is how human mind's solving capabilites has been simulated using code. 
+#
