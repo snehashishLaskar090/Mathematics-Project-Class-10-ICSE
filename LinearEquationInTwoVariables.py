@@ -116,11 +116,9 @@ def SolveTwoEquas(equa1:Equation, equa2:Equation):
                 sign = "+"
 
             equa2.LHS.append(Term(sign, str(sum2), equa2.variable))
-    print([i.rep for i in equa2.LHS],"=", [i.rep for i in equa2.RHS])
 
 
-
-# Haha new change
+        print([i.rep for i in equa2.LHS],"=", [i.rep for i in equa2.RHS])
 
 SolveTwoEquas(equation1, equation2)
 
