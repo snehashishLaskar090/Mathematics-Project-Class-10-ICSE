@@ -1,6 +1,9 @@
 # Creating a class term
 
 
+from email.contentmanager import raw_data_manager
+
+
 def Lcm(x, y):
     greater = max(x,y)
 
@@ -26,6 +29,7 @@ class Term:
         self.num_coef = num_coef
         self.variable = variable
         self.sign = sign
+        self.constant = int(str(self.sign) + str(self.num_coef))
         self.rep = self.sign + str(self.num_coef) + self.variable
 
     def changeSign(self):
@@ -38,8 +42,6 @@ class Term:
     def __str__(self):
         self.rep = self.sign + str(self.num_coef) + self.variable
         return self.rep
-
-
 
 
 class Equation:
@@ -58,68 +60,111 @@ class Equation:
 
                 self.RHS.remove(i)
                 i.changeSign()
+                i.rep = i.sign + str(i.num_coef) + i.variable
                 self.LHS.append(i)
-            
+                self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
+                
+        # return self.eqaution
 
-        self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
-
-        return self.eqaution
-
-
-
-    def Solve(self):
-
+        previous_var = ""
         for i in self.LHS:
 
-            if i != self.LHS[-1] and i.variable == self.LHS[self.LHS.index(i) + 1]:
+            if self.LHS.index(i) == 0:
+                previous_var = i
 
-                i.num_coef = str(int(i.num_coef) + int(self.LHS[self.LHS.index(i) + 1].num_coef))
-                self.LHS.remove(self.LHS[self.LHS.index(i) + 1])
+            elif i.variable == previous_var:
 
+                present_index = self.LHS.index(i)
+                previous_term = self.LHS[present_index-1]
 
-            if len(self.LHS) == 3:
+                constant  = int(previous_term.sign + previous_term.num_coef)
+                present_constant = int(i.sign + i.num_coef)
 
-                print("3")
+                new_constant = constant + present_constant
+
+                sign = "+"
+
+                if new_constant < 0:
+                    sign = "-"
+
+                new_term = Term(str(new_constant*1), i.variable, sign)
                 
-                x = int(self.LHS[0].num_coef)
-                y = int(self.LHS[-1].num_coef)
+                self.LHS.remove(self.LHS[present_index])
+                self.LHS[present_index-1] = new_term
 
-                lcm = Lcm(x,y)
+                self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
+                print(self.eqaution)
 
-                val1  = 0
-                val2 = 0
+            else:
+                previous_var = i.variable
+       
 
-                for x in range(lcm):
-                    for j in range(lcm):
+        # Main Core Of Algorithm
 
-                        if x + j == lcm:
-                            val1 = x
-                            val2 = j
+        product = self.LHS[0].constant * self.LHS[-1].constant
+        middle = self.LHS[1].constant
+        print(middle)
+        mid_var = self.LHS[1].variable
 
-                        elif max(x,j) - min(x,j) == lcm:
-                            val1 = x
-                            val2 = j
-
-                new = self.LHS[-1]
-                self.LHS.remove(self.LHS[-1])
-                sign1 = "+"
-                if val1 < 0:
-                    sign1 = "-"
-                self.LHS.append(Term(str(val1), i.variable,sign1 ))
-                sign2 = "+"
-                if val2 < 0:
-                    sign2 = "-"
-                self.LHS.append(Term(str(val2), i.variable,sign2) )
-
-                self.LHS.append(new)
+        num1 = 0
+        num2 = 0
 
 
-        return self.eqaution
+        for i in range(product):
+            for j in range(product):
+                if i + j == middle or i - j == middle:
+                    if i != 0 and j != 0:
+                        num1 = i
+                        num2 = j
 
+                        break
 
-equa = Equation([Term("2", "x^2", "+"), Term("6", "x", "-"), Term("8", "", "+")], [])
+        print(num1, num2)
+
+        if num1 - num2 == middle:
+
+            sign = "+"
+            if num1 < 0:
+                sign = "-"
+
+            term = Term(str(num1), mid_var, sign)
+            term2 = Term(str(num2), mid_var, "-")
+            print(term)
+            print(term2)
+            self.LHS.remove(self.LHS[1])
+            
+            prev = self.LHS[-1]
+            self.LHS.remove(self.LHS[-1])
+
+            self.LHS.append(term)
+            self.LHS.append(term2)
+            self.LHS.append(prev)
+
+            print([i.rep for i in self.LHS])
+
+        elif num1 + num2 == middle:
+
+            sign = "+"
+            if num1 < 0:
+                sign = "-"
+
+            term = Term(str(num1), mid_var, sign)
+            term2 = Term(str(num2), mid_var, "+")
+
+            self.LHS.remove(self.LHS[1])
+            
+            prev = self.LHS[-1]
+            self.LHS.remove(self.LHS[-1])
+
+            self.LHS.append(term)
+            self.LHS.append(term2)
+            self.LHS.append(prev)
+
+            print([i for i in self.LHS])
+
+        
+equa = Equation([Term("1", "x^2", "+"), Term("3", "x", "-"), Term("2", "", "+")], [])
 equa.factorize()
-print(equa.Solve())
 
 
 
