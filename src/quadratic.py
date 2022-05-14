@@ -250,8 +250,6 @@ class Equation:
                 raise Exception("Couldnt solve it with factorization use formula")
 
 
-
-
         elif num1 + num2 == middle:
 
             sign = "+"
