@@ -140,5 +140,6 @@ Output :
     step 1 : 1x = 5
     step 2 : x = 5.0
 ```
-Therefore this is how human mind's solving capabilites has been simulated using code. 
-#
+
+## Simulating Solving Quadratic Equations
+

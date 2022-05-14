@@ -1,8 +1,8 @@
 # Creating a class term
 
-from turtle import left
 from variable1 import equation as equ
 
+# A function to calcultate lcm of two numbers
 def Lcm(x, y):
     greater = max(x,y)
 
@@ -15,7 +15,7 @@ def Lcm(x, y):
     return lcm
 
 
-
+# A class Term To represent every term in an equation
 class Term:
     """
     Every term in the given equation is passed a Term class
@@ -45,6 +45,7 @@ class Term:
         return self.rep
 
 
+# A class to represent every equation
 class Equation:
 
     def __init__(self, LHS: list, RHS: list):
@@ -54,6 +55,8 @@ class Equation:
         self.eqaution = f"{[i.rep for i in LHS]} = {[j.rep for j in RHS]}"
 
     def factorize(self):
+
+        print("\n","---------------Solution----------------", "\n")
 
         if len(self.RHS) != 0:
 
@@ -66,6 +69,7 @@ class Equation:
                 self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
                 
         # return self.eqaution
+        print("=>" ,self.eqaution, "\n")
 
         previous_var = ""
         for i in self.LHS:
@@ -94,7 +98,7 @@ class Equation:
                 self.LHS[present_index-1] = new_term
 
                 self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
-
+                print("step 1" ,self.eqaution, "\n")
             else:
                 previous_var = i.variable
        
@@ -150,7 +154,7 @@ class Equation:
             self.LHS.append(term2)
             self.LHS.append(prev)
 
-
+            print("step 1" ,self.eqaution, "\n")
             left_constant1 = int(self.LHS[0].constant)
             left_constant2 = int(self.LHS[1].constant)
             right_constant1 = int(self.LHS[2].constant)
@@ -270,7 +274,7 @@ class Equation:
             self.LHS.append(term2)
             self.LHS.append(prev)
 
-
+            print("=>",[i.rep for i in self.LHS], " = [] \n")
             left_constant1 = int(self.LHS[0].constant)
             left_constant2 = int(self.LHS[1].constant)
             right_constant1 = int(self.LHS[2].constant)
@@ -349,10 +353,11 @@ class Equation:
 
             equation1 = [i.rep for i in left_side]
             equation2 = [i.rep for i in right_side]
-
+            print("=>",left_var.rep ,equation1, right_var.rep, equation2, " = []\n")
             factor_equa = [left_var, right_var]
+            
             if equation1 == equation2:
-
+                print("=>",[i.rep for i in factor_equa], equation1, " = []\n")
                 root1 = equ(left_side, [])
                 root1.factorize()
                 ans1 = root1.Solve()
@@ -360,20 +365,66 @@ class Equation:
                 root2 = equ(factor_equa, [])
                 root2.factorize()
                 ans2 = root2.Solve()
-                print(f"therefore the roots to your equation are {ans1} and {ans2}")
+                print(f"=> roots to your equation are {ans1} and {ans2}\n")
           
             else:
                 raise Exception("Couldnt solve it with factorization use formula")
 
+# equa = Equation([Term("1", "x^2", "+"), Term("2", "x", "-"), Term("15", "", "-")], [])
+# equa.factorize()
+
+lhs = []
+rhs = []
+mystring = input("""
+Enter A Valid Quadratic Equation Below\n
+""") 
+string = mystring.split("=")[0]
+string2 = mystring.split("=")[1]
+split = string.split()
+right_split = string2.split()
 
 
-equa = Equation([Term("21", "x^2", "+"), Term("8", "x", "-"), Term("4", "", "-")], [])
+
+for i in split:
+    try:
+        int(i)
+        sign = split[split.index(i)-1]
+
+        term = Term(str(i), "",sign)
+        lhs.append(term)
+    except:
+        num = ""
+        var = ""
+        if "+" != i and i != "-":
+            split2 = [j for j in i ]
+
+
+            for j in split2:
+                
+                try:
+                    int(j)
+                    num += j
+                    var = i.split(j)[1]
+                except:
+
+                    break
+
+            sign = "+"
+            if i  == split[1]:
+                sign = "+"
+
+            elif i != split[0]:
+                sign = split[split.index(i)-1]
+            
+            term = Term(num, var, sign)
+
+            lhs.append(term)
+
+equa = Equation(lhs, rhs)
 equa.factorize()
 
 
 
-
-            
 
 
 
