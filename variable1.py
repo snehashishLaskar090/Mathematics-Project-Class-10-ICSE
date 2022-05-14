@@ -76,6 +76,5 @@ class equation:
 # Answer using human mind  = 5
 # Run the program and see if the result is the same :)
 
-firstEqua = equation([Term("1", "x", "+"), Term("17.5", "x", "-")], [Term("63", "", "-"), Term("11","", "-")])
 
 

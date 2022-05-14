@@ -1,8 +1,7 @@
 # Creating a class term
 
-
-from email.contentmanager import raw_data_manager
-
+from turtle import left
+from variable1 import equation as equ
 
 def Lcm(x, y):
     greater = max(x,y)
@@ -14,6 +13,8 @@ def Lcm(x, y):
        greater += 1
 
     return lcm
+
+
 
 class Term:
     """
@@ -93,7 +94,6 @@ class Equation:
                 self.LHS[present_index-1] = new_term
 
                 self.eqaution = f"{[i.rep for i in self.LHS]} = {[j.rep for j in self.RHS]}"
-                print(self.eqaution)
 
             else:
                 previous_var = i.variable
@@ -103,34 +103,44 @@ class Equation:
 
         product = self.LHS[0].constant * self.LHS[-1].constant
         middle = self.LHS[1].constant
-        print(middle)
         mid_var = self.LHS[1].variable
 
         num1 = 0
         num2 = 0
 
 
-        for i in range(product):
-            for j in range(product):
-                if i + j == middle or i - j == middle:
-                    if i != 0 and j != 0:
-                        num1 = i
-                        num2 = j
+        if product < 0:
+            
+            for i in range(product, -product):
+                for j in range(product, -product):
+                    if i + j == middle or  i-j == middle:
+                        if i*j == product:
+                            num1 = i
+                            num2 = j
 
-                        break
+        elif product > 0:
 
-        print(num1, num2)
+            for i in range(product):
+                for j in range(product):
+                    if i + j == middle or  i-j == middle:
+                        if i*j == product:
+                            num1 = i
+                            num2 = j
 
+        
         if num1 - num2 == middle:
 
             sign = "+"
             if num1 < 0:
                 sign = "-"
 
+            sign2 = "+"
+            if num2 < 0:
+                sign2 = "-"
+
             term = Term(str(num1), mid_var, sign)
-            term2 = Term(str(num2), mid_var, "-")
-            print(term)
-            print(term2)
+            term2 = Term(str(-num2), mid_var, sign2)
+
             self.LHS.remove(self.LHS[1])
             
             prev = self.LHS[-1]
@@ -140,7 +150,103 @@ class Equation:
             self.LHS.append(term2)
             self.LHS.append(prev)
 
-            print([i.rep for i in self.LHS])
+
+            left_constant1 = int(self.LHS[0].constant)
+            left_constant2 = int(self.LHS[1].constant)
+            right_constant1 = int(self.LHS[2].constant)
+            right_constant2 = int(self.LHS[3].constant)
+
+            
+            def compute_hcf(num1, num2):
+                def gcf(x, y):
+                # choose the smaller number
+                    smaller = 0
+                    hcf = 0
+                    if x > y:
+                        smaller = y
+                    else:
+                        smaller = x
+                    for i in range(1, smaller+1):
+                        if((x % i == 0) and (y % i == 0)):
+                            hcf = i 
+                    return hcf
+
+                if num1 < 0 and num2 < 0:
+                    # maxim = max(num1, num2)
+                    num1 = -num1
+                    num2 = -num2
+                    ans = gcf(num1, num2)
+                    result = -ans
+                    return result
+
+                elif num1> 0 and num2> 0:
+                    return gcf(num1, num2)
+
+            left_common = compute_hcf(left_constant1, left_constant2)
+            right_common = compute_hcf(right_constant1, right_constant2)
+
+            
+
+            left_side = [self.LHS[0], self.LHS[1]]
+            right_side = [self.LHS[2], self.LHS[3]] 
+
+            left_var = ""
+            right_var = ""
+      
+            
+            for i in left_side:
+                i.constant = int(i.constant)
+                i.constant /= left_common
+                if "^2" in left_side[0].variable:
+
+                    left_sign = "+"
+                    if left_common < 0:
+                        left_sign = "-"
+                        new_left_common = -left_common
+                    else:
+                        new_left_common =left_common
+
+
+                    left_side[0].variable = left_side[1].variable
+                    left_side[1].variable = ""
+                    left_var = Term(str(new_left_common), left_side[0].variable, left_sign)
+                    
+                i.rep = str(i.constant)+i.variable
+
+
+            for i in right_side:
+                i.constant = int(i.constant)
+                i.constant /= right_common
+        
+                i.rep = str(i.constant)+ i.variable
+
+                right_sign = "+"
+                if right_common < 0:
+                    right_sign = "-"
+                    new_right_common = -right_common
+                right_var = Term(str(new_right_common), right_side[-1].variable, right_sign)
+      
+
+            equation1 = [i.rep for i in left_side]
+            equation2 = [i.rep for i in right_side]
+
+            factor_equa = [left_var, right_var]
+            if equation1 == equation2:
+
+                root1 = equ(left_side, [])
+                root1.factorize()
+                ans1 = root1.Solve()
+
+                root2 = equ(factor_equa, [])
+                root2.factorize()
+                ans2 = root2.Solve()
+                print(f" \n therefore the roots to your equation are {ans1} and {ans2} \n")
+          
+            else:
+                raise Exception("Couldnt solve it with factorization use formula")
+
+
+
 
         elif num1 + num2 == middle:
 
@@ -148,8 +254,12 @@ class Equation:
             if num1 < 0:
                 sign = "-"
 
+            sign2 = "+"
+            if num2 < 0:
+                sign2 = "-"
+
             term = Term(str(num1), mid_var, sign)
-            term2 = Term(str(num2), mid_var, "+")
+            term2 = Term(str(-num2), mid_var, sign2)
 
             self.LHS.remove(self.LHS[1])
             
@@ -160,10 +270,104 @@ class Equation:
             self.LHS.append(term2)
             self.LHS.append(prev)
 
-            print([i for i in self.LHS])
 
+            left_constant1 = int(self.LHS[0].constant)
+            left_constant2 = int(self.LHS[1].constant)
+            right_constant1 = int(self.LHS[2].constant)
+            right_constant2 = int(self.LHS[3].constant)
+
+            
+            def compute_hcf(num1, num2):
+                def gcf(x, y):
+                # choose the smaller number
+                    smaller = 0
+                    hcf = 0
+                    if x > y:
+                        smaller = y
+                    else:
+                        smaller = x
+                    for i in range(1, smaller+1):
+                        if((x % i == 0) and (y % i == 0)):
+                            hcf = i 
+                    return hcf
+
+                if num1 < 0 and num2 < 0:
+                    # maxim = max(num1, num2)
+                    num1 = -num1
+                    num2 = -num2
+                    ans = gcf(num1, num2)
+                    result = -ans
+                    return result
+
+                elif num1> 0 and num2> 0:
+                    return gcf(num1, num2)
+
+            left_common = compute_hcf(left_constant1, left_constant2)
+            right_common = compute_hcf(right_constant1, right_constant2)
+
+            
+
+            left_side = [self.LHS[0], self.LHS[1]]
+            right_side = [self.LHS[2], self.LHS[3]] 
+
+            left_var = ""
+            right_var = ""
+      
+            
+            for i in left_side:
+                i.constant = int(i.constant)
+                i.constant /= left_common
+                if "^2" in left_side[0].variable:
+
+                    left_sign = "+"
+                    if left_common < 0:
+                        left_sign = "-"
+                        new_left_common = -left_common
+                    else:
+                        new_left_common =left_common
+
+
+                    left_side[0].variable = left_side[1].variable
+                    left_side[1].variable = ""
+                    left_var = Term(str(new_left_common), left_side[0].variable, left_sign)
+                    
+                i.rep = str(i.constant)+i.variable
+
+
+            for i in right_side:
+                i.constant = int(i.constant)
+                i.constant /= right_common
         
-equa = Equation([Term("1", "x^2", "+"), Term("3", "x", "-"), Term("2", "", "+")], [])
+                i.rep = str(i.constant)+ i.variable
+
+                right_sign = "+"
+                if right_common < 0:
+                    right_sign = "-"
+                    new_right_common = -right_common
+                right_var = Term(str(new_right_common), right_side[-1].variable, right_sign)
+      
+
+            equation1 = [i.rep for i in left_side]
+            equation2 = [i.rep for i in right_side]
+
+            factor_equa = [left_var, right_var]
+            if equation1 == equation2:
+
+                root1 = equ(left_side, [])
+                root1.factorize()
+                ans1 = root1.Solve()
+
+                root2 = equ(factor_equa, [])
+                root2.factorize()
+                ans2 = root2.Solve()
+                print(f"therefore the roots to your equation are {ans1} and {ans2}")
+          
+            else:
+                raise Exception("Couldnt solve it with factorization use formula")
+
+
+
+equa = Equation([Term("21", "x^2", "+"), Term("8", "x", "-"), Term("4", "", "-")], [])
 equa.factorize()
 
 
@@ -177,5 +381,114 @@ equa.factorize()
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
