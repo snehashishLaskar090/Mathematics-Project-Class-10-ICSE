@@ -7,6 +7,7 @@
 # Creating a class term
 from ast import excepthandler
 from operator import eq
+from turtle import right
 
 
 class Term:
@@ -84,7 +85,7 @@ class equation:
         for i in self.LHS:
             sum2 += float(i.sign + str(i.num_coef))
             variable = i.variable
-        print("=> ['"+ str(int(sum)) + variable + "']","=", "['" + str(int(sum2)) + "']\n")
+        print("=> ['"+ str(int(sum2)) + variable + "']","=", "['" + str(int(sum)) + "']\n")
         print( "=>", variable, "=",sum/sum2, "\n")
 
 # Here the equation given is 2x + 5 = 10 + 1x
@@ -116,19 +117,26 @@ for i in right_split:
     except:
         num = ""
         var = ""
-
+        print(right_split)
         if "+" != i and "-" != i:
+    
             split2 = [j for j in i ]
 
             last = right_split[right_split.index(i)-1]
-            for i in split2:
+            for j in split2:
                 try:
-                    int(i)
-                    num += i
-                except:
-                    var=i 
+                    int(j)
+                    num = j
+                    
+                    var = i.split(j)[1]
                     break
+                    
+                except:
+                
+                    break
+        
             term = Term(str(num), var, last )
+            print(term.rep)
             rhs.append(term)
 
 for i in split:
